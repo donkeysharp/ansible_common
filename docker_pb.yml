@@ -1,6 +1,9 @@
 ---
 - hosts: all
   become: True
+  vars_files:
+    - group_vars/vault.yml
+
   pre_tasks:
     - debug: msg='Starting docker setup playbook'
 
@@ -10,3 +13,4 @@
   roles:
     - { role: debian_base }
     - { role: docker_debian, docker_user: "{{ansible_user}}" }
+    - { role: drone }

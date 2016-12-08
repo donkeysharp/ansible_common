@@ -1,0 +1,13 @@
+
+- block:
+  - name: Create /etc/drone directory
+    file:
+      name: /etc/drone
+      state: directory
+      mode: 0755
+
+  - name: Create drone configuration file
+    template:
+      src: templates/dronerc
+      dest: /etc/drone/dronerc
+      mode: 0644
