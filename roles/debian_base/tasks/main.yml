@@ -1,0 +1,11 @@
+- block:
+  - name: Update repositories
+    apt:
+      update_cache: yes
+
+  - name: Install base packages
+    apt:
+      name: "{{item}}"
+    with_items:
+      - apt-transport-https
+      - git

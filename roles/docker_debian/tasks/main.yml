@@ -1,0 +1,29 @@
+- block:
+  - name: Add GPG key
+    apt_key:
+      keyserver: hkp://p80.pool.sks-keyservers.net:80
+      id: 58118E89F3A912897C070ADBF76221572C52609D
+
+  - name: Add docker repository
+    apt_repository:
+      repo: deb https://apt.dockerproject.org/repo debian-jessie main
+      filename: docker
+      state: present
+    register: docker_repository
+
+  - name: Update repository
+    apt:
+      update_cache: yes
+    when: docker_repository is defined
+
+  - name: Install docker-engine
+    apt:
+      name: docker-engine
+      state: present
+
+  - debug: msg="Adding {{docker_user}} to docker group"
+
+  - name: Add user to docker group
+    user:
+      name: "{{docker_user}}"
+      groups: docker

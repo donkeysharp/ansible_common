@@ -1,0 +1,1 @@
+example.com ansible_user=foo ansible_password=bar ansible_become_password=bar
