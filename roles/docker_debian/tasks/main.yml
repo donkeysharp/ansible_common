@@ -14,7 +14,7 @@
   - name: Update repository
     apt:
       update_cache: yes
-    when: docker_repository is defined
+      cache_valid_time: 3600
 
   - name: Install docker-engine
     apt:
