@@ -1,0 +1,27 @@
+- block:
+  - name: Add nginx gpg key
+    apt_key:
+      url: https://nginx.org/keys/nginx_signing.key
+      state: present
+
+  - name: Add nginx repository
+    apt_repository:
+      repo: deb http://nginx.org/packages/debian/ jessie nginx
+      filename: nginx
+      state: present
+    register: nginx_repository
+
+  - name: Add nginx higher priority
+    template:
+      src: templates/nginx.preferences
+      dest: /etc/apt/preferences.d/nginx
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: present

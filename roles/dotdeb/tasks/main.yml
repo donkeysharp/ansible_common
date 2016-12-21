@@ -1,0 +1,17 @@
+- block:
+  - name: Add dotdeb gpg key
+    apt_key:
+      url: https://www.dotdeb.org/dotdeb.gpg
+      state: present
+
+  - name: Add dotdeb repository
+    apt_repository:
+      repo: deb http://packages.dotdeb.org jessie all
+      filename: dotdeb
+      state: present
+    register: dotdeb_repository
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600

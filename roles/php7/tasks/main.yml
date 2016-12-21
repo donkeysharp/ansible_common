@@ -1,0 +1,9 @@
+# Expects dotdeb repos to be installed
+- block:
+  - name: Install PHP7
+    apt:
+      name: "{{item}}"
+      state: present
+    with_items:
+      - php-fpm
+      - php-mysql
