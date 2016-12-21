@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: True
+  roles:
+    - { role: debian_base }
+    - { role: dotdeb }
+    - { role: nginx }
+    - { role: php7 }
