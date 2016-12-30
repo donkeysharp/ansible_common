@@ -11,3 +11,9 @@
       - apt-transport-https
       - build-essential
       - git
+      - vim
+      - htop
+      - lsof
+      - dstat
+      - strace
+      - tmux
