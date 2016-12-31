@@ -1,0 +1,26 @@
+- block:
+  - name: Add nodesource gpg key
+    apt_key:
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+      state: present
+
+  - name: Add nodesorce repository
+    apt_repository:
+      repo: deb https://deb.nodesource.com/node_6.x jessie main
+      filename: nodesource
+      state: present
+
+  - apt_repository:
+      repo: deb-src https://deb.nodesource.com/node_6.x jessie main
+      filename: nodesource
+      state: present
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: Install nodejs
+    apt:
+      name: nodejs
+      state: present
