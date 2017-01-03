@@ -9,7 +9,6 @@
       repo: deb http://nginx.org/packages/debian/ jessie nginx
       filename: nginx
       state: present
-    register: nginx_repository
 
   - name: Add nginx higher priority
     template:

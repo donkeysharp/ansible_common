@@ -9,7 +9,6 @@
       repo: deb https://apt.dockerproject.org/repo debian-jessie main
       filename: docker
       state: present
-    register: docker_repository
 
   - name: Update repository
     apt:

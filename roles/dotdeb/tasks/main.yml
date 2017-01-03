@@ -9,7 +9,6 @@
       repo: deb http://packages.dotdeb.org jessie all
       filename: dotdeb
       state: present
-    register: dotdeb_repository
 
   - name: apt-get update
     apt:
