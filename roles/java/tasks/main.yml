@@ -1,0 +1,50 @@
+---
+- block:
+  - name: Download latest jdk version
+    get_url:
+      url: http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz
+      headers: 'Cookie: oraclelicense=accept-securebackup-cookie'
+      mode: u=rwx,g=rx,o=rx
+      dest: /opt/java_jdk8.tar.gz
+
+  - name: Uncompress latest jdk
+    unarchive:
+      copy: no
+      src: /opt/java_jdk8.tar.gz
+      dest: /opt
+      owner: root
+      group: root
+      mode: u=rwx,g=rx,o=rx
+
+  - name: Update alternatives for java
+    command: update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_112/bin/java 100
+
+  - name: Update alternatives for javac
+    command: update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_112/bin/javac 100
+
+  - name: Download maven
+    get_url:
+      url: http://www-eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+      dest: /opt/maven.tar.gz
+      mode: u=rwx,g=rw,o=rw
+
+  - name: Uncompress maven
+    unarchive:
+      copy: no
+      src: /opt/maven.tar.gz
+      dest: /opt
+      owner: root
+      group: root
+      mode: u=rwx,g=rx,o=rx
+
+  - name: Add JAVA_HOME on .bashrc
+    lineinfile:
+      dest: '/home/{{ansible_user}}/.bashrc'
+      state: present
+      line: export JAVA_HOME='/opt/jdk1.8.0_112'
+
+  - name: Add maven to PATH on .bashrc
+    lineinfile:
+      dest: '/home/{{ansible_user}}/.bashrc'
+      state: present
+      line: export PATH="/opt/apache-maven-3.3.9/bin:${PATH}"
