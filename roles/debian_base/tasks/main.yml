@@ -17,3 +17,11 @@
       - dstat
       - strace
       - tmux
+
+  - name: tmux config file
+    template:
+      src: templates/tmux.conf
+      dest: "/home/{{ansible_user}}/.tmux.conf"
+      owner: "{{ansible_user}}"
+      group: "{{ansible_user}}"
+      mode: 0755
