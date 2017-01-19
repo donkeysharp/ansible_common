@@ -25,3 +25,11 @@
       owner: "{{ansible_user}}"
       group: "{{ansible_user}}"
       mode: 0755
+
+  - name: vim config file
+    template:
+      src: templates/vimrc
+      dest: "/home/{{ansible_user}}/.vimrc"
+      owner: "{{ansible_user}}"
+      group: "{{ansible_user}}"
+      mode: 0755
