@@ -2,7 +2,7 @@
 - block:
   - name: Download drone-cli
     get_url:
-      url: http://downloads.drone.io/release/darwin/amd64/drone.tar.gz
+      url:  http://downloads.drone.io/release/linux/amd64/drone.tar.gz
       mode: u=rwx,g=rx,o=rx
       dest: /opt/drone.tar.gz
 
