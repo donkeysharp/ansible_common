@@ -1,8 +1,8 @@
 ---
 - hosts: all
   become: True
-  vars_files:
-    - group_vars/vault.yml
+  # vars_files:
+  #   - group_vars/vault.yml
 
   pre_tasks:
     - debug: msg='Starting docker setup playbook'
