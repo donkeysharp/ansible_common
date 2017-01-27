@@ -17,6 +17,7 @@
       - dstat
       - strace
       - tmux
+      - python-pip
 
   - name: tmux config file
     template:
