@@ -2,7 +2,7 @@ Ansible Common
 ==============
 
 
-###Requirements
+### Requirements
 Ansible must be installed.
 Example:
 
@@ -11,11 +11,13 @@ Example:
     $ pip install ansible
 
 
-###Run a playbook
+### Run a playbook
 In order to run a playbook run:
 
     $ ansible-playbook -i inventory/inventory.yml some_play_book.yml
-###TODO
+
+    
+### TODO
 Create roles and playbooks for:
 
  * Java stuff (jdk, jre, mvn, etc)
