@@ -1,13 +1,30 @@
 
 - block:
-  - name: Create /etc/drone directory
-    file:
-      name: /etc/drone
-      state: directory
-      mode: 0755
+  - name: Download drone-cli
+    get_url:
+      url:  http://downloads.drone.io/release/linux/amd64/drone.tar.gz
+      mode: u=rwx,g=rx,o=rx
+      dest: /opt/drone.tar.gz
 
-  - name: Create drone configuration file
-    template:
-      src: templates/dronerc
-      dest: /etc/drone/dronerc
-      mode: 0644
+  - name: Install drone-cli
+    unarchive:
+      copy: no
+      src: /opt/drone.tar.gz
+      dest: /usr/bin
+      owner: root
+      group: root
+      mode: u=rwx,g=rx,o=rx
+
+
+  # - name: Pull drone server image
+  #   debug: msg=Not Implemented
+
+  # - name: Pull drone agent image
+  #   debug: msg=Not Implemented
+
+  # # Use environment variables
+  # - name: Start drone server
+  #   debug: msg=Not Implemented
+
+  # - name: Start drone agent
+  #   debug: msg=Not Implemented
