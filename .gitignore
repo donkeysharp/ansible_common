@@ -1,3 +1,4 @@
 **/inventory.yml
 **/*.retry
 env/
+.vault_pass.txt
