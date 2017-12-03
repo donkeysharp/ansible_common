@@ -9,6 +9,10 @@
       name: "{{item}}"
     with_items:
       - apt-transport-https
+      - software-properties-common
+      - ca-certificates
+      - curl
+      - gnupg2
       - build-essential
       - git
       - vim
