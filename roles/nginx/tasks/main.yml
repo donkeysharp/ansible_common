@@ -6,7 +6,7 @@
 
   - name: Add nginx repository
     apt_repository:
-      repo: deb http://nginx.org/packages/debian/ jessie nginx
+      repo: deb http://nginx.org/packages/debian/ stretch nginx
       filename: nginx
       state: present
 
