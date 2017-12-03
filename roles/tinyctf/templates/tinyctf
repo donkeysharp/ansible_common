@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export TINYCTF_CONFIG=/etc/tinyctf/config.json
+
+source "{{tinyctf.virtualenv}}/bin/activate"
+cd "{{tinyctf.location}}"
+nohup python server.py &

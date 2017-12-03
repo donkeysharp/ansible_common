@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: True
+
+  pre_tasks:
+    - debug: msg='Starting TinyCTF setup playbook'
+
+  post_tasks:
+    - debug: msg='Finished TinyCTF setup playbook'
+
+  roles:
+    - { role: debian_base }
+    - { role: docker_debian, docker_user: "{{ansible_user}}" }
+    - { role: tinyctf }
+

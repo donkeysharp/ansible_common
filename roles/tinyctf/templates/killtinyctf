@@ -1,0 +1,6 @@
+#!/bin/bash
+
+TINYCTF_PID="$(ps uax | grep server.py | grep -v grep | awk '{print $2}')"
+if [[ -n TINYCTF_PID ]]; then
+  kill "${TINYCTF_PID}"
+fi

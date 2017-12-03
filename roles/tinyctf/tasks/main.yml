@@ -1,0 +1,60 @@
+- block:
+  - name: Update repository indexes
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: Install required packages
+    apt:
+      name: "{{item}}"
+    with_items:
+     - python-dev
+
+  - name: Install virtualenv
+    pip:
+      name: "{{item}}"
+    with_items:
+      - virtualenv
+
+  - name: Create virtualenv
+    shell: |
+      if [[ ! -d {{tinyctf.virtualenv}} ]]; then
+        virtualenv {{tinyctf.virtualenv}}
+      fi
+
+  - name: Clone TinyCTF
+    git:
+      repo: "{{tinyctf.repository}}"
+      dest: "{{tinyctf.location}}"
+      clone: yes
+      force: yes
+      update: yes
+
+  - name: Create TinyCTF config directory
+    file:
+      path: /etc/tinyctf
+      state: directory
+      mode: 0755
+
+  - name: TinyCTF config file
+    template:
+      src: templates/config.json
+      dest: "/etc/tinyctf/config.json"
+      mode: 0755
+
+  - name: TinyCTF start script
+    template:
+      src: templates/tinyctf
+      dest: /usr/local/bin/tinyctf
+      mode: 0755
+
+  - name: TinyCTF stop script
+    template:
+      src: templates/killtinyctf
+      dest: /usr/local/bin/killtinyctf
+      mode: 0755
+
+  - name: Install TinyCTF dependencies
+    pip:
+      requirements: "{{tinyctf.location}}/requirements.txt"
+      virtualenv: "{{tinyctf.virtualenv}}"
