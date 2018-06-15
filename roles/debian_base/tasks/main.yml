@@ -12,6 +12,7 @@
       - software-properties-common
       - ca-certificates
       - curl
+      - man
       - gnupg2
       - build-essential
       - git
