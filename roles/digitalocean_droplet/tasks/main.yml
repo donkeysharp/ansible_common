@@ -1,0 +1,23 @@
+- block:
+  - name: Create DigitalOcean droplet
+    digital_ocean:
+      state: present
+      api_token: "{{ digitalocean.token }}"
+      command: droplet
+      image_id: "{{ digitalocean.image }}"
+      id: "{{ digitalocean.id }}"
+      name: "{{ droplet_name }}"
+      region_id: "{{ digitalocean.region }}"
+      size_id: "{{ digitalocean.size }}"
+      ssh_key_ids: "{{ public_key }}"
+      user_data: >
+        #cloud-config
+        users:
+        - name: ansible
+            groups: sudo
+            shell: /bin/bash
+            sudo: ['ALL=(ALL) NOPASSWD:ALL']
+            ssh-authorized-keys:
+              - {{ public_key }}
+      wait: true
+
