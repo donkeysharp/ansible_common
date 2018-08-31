@@ -32,6 +32,14 @@
       group: "{{ansible_user}}"
       mode: 0755
 
+  - name: ansible sudoers file
+    template:
+      src: templates/ansible.sudoers
+      dest: /etc/sudoers.d/ansible
+      mode: 0440
+      owner: root
+      group: root
+
   - name: vim config file
     template:
       src: templates/vimrc
