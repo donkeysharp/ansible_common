@@ -1,0 +1,15 @@
+version: '3'
+services:
+  server-1:
+    image: sergioguillen/teaching-container:latest
+    privileged: true
+    ports:
+    - "1022:22"
+    - "1080:80"
+    - "10443:443"
+    - "10800:8000"
+    - "10808:8080"
+    - "10300:3000"
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    restart: always
