@@ -1,0 +1,47 @@
+- name: Copy installation script
+  copy:
+    src: templates/installer.sh
+    dest: /opt/k3s-installer.sh
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Install and configure k3s node
+  args:
+    executable: /bin/bash
+  shell: |
+    systemctl status k3s-agent.service > /dev/null 2>&1
+    exit_code=$?
+    if [[ ${exit_code} == 0 || -f /etc/systemd/system/k3s-agent.service ]]; then
+      echo "k3s already installed"
+      exit 0
+    fi
+
+    set -e
+
+    export INSTALL_K3S_SKIP_DOWNLOAD=true
+    export INSTALL_K3S_SKIP_START=true
+    export INSTALL_K3S_TYPE=systemd
+
+    export K3S_URL=https://{{ groups["master"][0] }}:6443
+    export K3S_TOKEN={{ hostvars[groups["master"][0]]["k3s_token"] }}
+
+    echo "K3S_URL=${K3S_URL}"
+    echo "K3S_TOKEN=${K3S_TOKEN}"
+
+    pushd /opt
+      bash k3s-installer.sh agent
+    popd
+  register: install_output
+
+- name: Install show stdout
+  debug: msg={{ install_output.stdout_lines }}
+
+- name: Intall show stderr
+  debug: msg={{ install_output.stderr_lines }}
+
+- name: Enable and start k3s agent service
+  systemd:
+    name: k3s-agent.service
+    state: started
+    enabled: yes

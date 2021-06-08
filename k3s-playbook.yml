@@ -1,0 +1,34 @@
+- hosts: all
+  become: True
+  tags: [all]
+  gather_facts: yes
+  roles:
+  - role: debian_base
+    tags:
+    - base
+    - debian-base
+
+  - role: k3s
+    action: setup
+    tags:
+    - k3s-setup
+
+- hosts: master
+  become: True
+  gather_facts: yes
+  tags: [master]
+  roles:
+  - role: k3s
+    action: master
+    tags:
+    - k3s-master
+
+- hosts: nodes
+  become: True
+  tags: [nodes]
+  gather_facts: yes
+  roles:
+  - role: k3s
+    action: node
+    tags:
+    - k3s-node

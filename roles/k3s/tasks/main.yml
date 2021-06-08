@@ -1,0 +1,20 @@
+- name: "Gathering Facts"
+  setup:
+  when: ansible_facts == {}
+
+- name: k3s download url
+  debug:
+    var: k3s["{{ ansible_facts.architecture }}"].url
+
+- name: Download k3s binary
+  get_url:
+    url: "{{ k3s[ansible_facts.architecture].url }}"
+    dest: "{{ k3s.location }}"
+    mode: '0755'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+  when: action=="setup"
+
+- name: Setup master server
+  include: ./{{action}}.yml
+  when: action=="master" or action=="node"

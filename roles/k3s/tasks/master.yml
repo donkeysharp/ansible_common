@@ -1,0 +1,65 @@
+- name: Copy installation script
+  copy:
+    src: templates/installer.sh
+    dest: /opt/k3s-installer.sh
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Install and configure master server
+  args:
+    executable: /bin/bash
+  shell: |
+    systemctl status k3s.service > /dev/null 2>&1
+    exit_code=$?
+    if [[ ${exit_code} == 0 || -f /etc/systemd/system/k3s.service ]]; then
+      echo "k3s already installed"
+      exit 0
+    fi
+
+    set -e
+
+    export INSTALL_K3S_SKIP_DOWNLOAD=true
+    export INSTALL_K3S_SKIP_START=true
+    export INSTALL_K3S_TYPE=systemd
+
+    pushd /opt
+      bash k3s-installer.sh server --disable traefik
+    popd
+  register: install_output
+
+- debug: msg={{ install_output.stdout_lines }}
+- debug: msg={{ install_output.stderr_lines }}
+
+- name: Enable and start k3s master service
+  systemd:
+    name: k3s.service
+    state: started
+    enabled: yes
+
+- name: Get k3s token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_token
+
+# - debug: msg={{ k3s_token.content | b64decode | regex_replace('\n', '') }}
+- name: Set k3s token fact
+  set_fact:
+    k3s_token: "{{ k3s_token.content | b64decode | regex_replace('\n', '') }}"
+
+- name: Create kubectl config directory
+  file:
+    path: ~{{ ansible_user }}/.kube
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0700'
+
+- name: Copy kubeconfig to home
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: ~{{ ansible_user }}/.kube/config
+    remote_src: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0600'
