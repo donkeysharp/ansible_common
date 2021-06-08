@@ -19,10 +19,12 @@
       - vim
       - htop
       - lsof
+      - iotop
+      - iftop
       - dstat
       - strace
       - tmux
-      - python-pip
+      - python3-pip
 
   - name: tmux config file
     template:
